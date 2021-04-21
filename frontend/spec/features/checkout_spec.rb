@@ -230,10 +230,28 @@ describe 'Checkout', type: :feature, inaccessible: true, js: true do
 
       expect(page).to have_selector('input.btn-primary.checkout-content-save-continue-button[data-disable-with]')
     end
+
+    it 'checks if link to checkout address step will be displayed' do
+      visit spree.checkout_state_path(:confirm)
+
+      expect(page).to have_link(href: spree.checkout_state_path(:address))
+    end
+
+    it 'checks if link to checkout delivery step will be displayed' do
+      visit spree.checkout_state_path(:confirm)
+
+      expect(page).to have_link(href: spree.checkout_state_path(:delivery))
+    end
+
+    it 'checks if link to checkout payment step will be displayed' do
+      visit spree.checkout_state_path(:confirm)
+
+      expect(page).to have_link(href: spree.checkout_state_path(:payment))
+    end
   end
 
   context 'when several payment methods are available', js: true do
-    let!(:current_store) { create(:store, default: true) }
+    let!(:store) { create(:store, default: true) }
 
     before do
       order = OrderWalkthrough.up_to(:payment)
@@ -635,7 +653,6 @@ describe 'Checkout', type: :feature, inaccessible: true, js: true do
           zone.members << create(:zone_member, zoneable: australia)
         end
 
-
         create(:shipping_method,
                name: 'Default',
                display_on: 'both',
@@ -688,14 +705,12 @@ describe 'Checkout', type: :feature, inaccessible: true, js: true do
   end
 
   context 'user has store credits', js: true do
-
     shared_examples 'could not use store credit' do
       it 'page has no data for Store Credits' do
         expect(page).not_to have_selector('[data-hook="checkout_payment_store_credit_available"]')
         expect(page).not_to have_selector('button[name="apply_store_credit"]')
       end
     end
-
 
     let(:bogus) { create(:credit_card_payment_method) }
     let(:store_credit_payment_method) { create(:store_credit_payment_method) }

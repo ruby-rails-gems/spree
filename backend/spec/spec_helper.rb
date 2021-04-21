@@ -46,6 +46,7 @@ require 'spree/testing_support/capybara_ext'
 require 'spree/testing_support/capybara_config'
 require 'spree/testing_support/rspec_retry_config'
 require 'spree/testing_support/image_helpers'
+require 'spree/testing_support/flatpickr_capybara'
 
 require 'spree/core/controller_helpers/strong_parameters'
 require 'webdrivers'
@@ -105,6 +106,7 @@ RSpec.configure do |config|
   config.include Spree::TestingSupport::ControllerRequests, type: :controller
   config.include Spree::TestingSupport::Flash
   config.include Spree::TestingSupport::ImageHelpers
+  config.include Spree::TestingSupport::FlatpickrCapybara
 
   config.include Spree::Core::ControllerHelpers::StrongParameters, type: :controller
 
@@ -118,11 +120,27 @@ end
 module Spree
   module TestingSupport
     module Flash
-      def assert_flash_success(flash)
-        flash = convert_flash(flash)
+      def assert_admin_flash_alert_success(message)
+        message_content = convert_flash(message)
 
-        within('.alert-success') do
-          expect(page).to have_content(flash)
+        within('#FlashAlertsContainer', visible: :all) do
+          expect(page).to have_css('span[data-alert-type="success"]', text: message_content, visible: :all)
+        end
+      end
+
+      def assert_admin_flash_alert_error(message)
+        message_content = convert_flash(message)
+
+        within('#FlashAlertsContainer', visible: :all) do
+          expect(page).to have_css('span[data-alert-type="error"]', text: message_content, visible: :all)
+        end
+      end
+
+      def assert_admin_flash_alert_notice(message)
+        message_content = convert_flash(message)
+
+        within('#FlashAlertsContainer', visible: :all) do
+          expect(page).to have_css('span[data-alert-type="notice"]', text: message_content, visible: :all)
         end
       end
     end

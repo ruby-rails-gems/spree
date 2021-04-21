@@ -23,7 +23,7 @@ describe 'orders', type: :feature do
 
     visit spree.order_path(order)
 
-    within '.order-show-line-items-line-item-desc-price' do
+    within first('[data-hook="order_item_price"]') do
       expect(page).to have_content '19.00'
     end
   end
@@ -104,5 +104,35 @@ describe 'orders', type: :feature do
         end
       end
     end
+  end
+
+  it 'does not have save and continue button' do
+    visit spree.order_path(order)
+
+    expect(page).not_to have_selector('input.btn-primary.checkout-content-save-continue-button[data-disable-with]')
+  end
+
+  it 'does not have place order button' do
+    visit spree.order_path(order)
+
+    expect(page).not_to have_button(class: 'btn-primary', value: 'Place Order')
+  end
+
+  it 'does not have link to checkout address step' do
+    visit spree.order_path(order)
+
+    expect(page).not_to have_link(href: spree.checkout_state_path(:address))
+  end
+
+  it 'does not have link to checkout delivery step' do
+    visit spree.order_path(order)
+
+    expect(page).not_to have_link(href: spree.checkout_state_path(:delivery))
+  end
+
+  it 'does not have link to checkout payment step' do
+    visit spree.order_path(order)
+
+    expect(page).not_to have_link(href: spree.checkout_state_path(:payment))
   end
 end

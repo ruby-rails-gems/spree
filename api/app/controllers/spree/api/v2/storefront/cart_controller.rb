@@ -19,7 +19,7 @@ module Spree
             order   = spree_current_order if spree_current_order.present?
             order ||= create_service.call(order_params).value
 
-            render_serialized_payload(201) { serialize_order(order) }
+            render_serialized_payload(201) { serialize_resource(order) }
           end
 
           def add_item
@@ -163,7 +163,7 @@ module Spree
           def serialize_estimated_shipping_rates(shipping_rates)
             estimate_shipping_rates_serializer.new(
               shipping_rates,
-              params: { currency: spree_current_order.currency }
+              params: serializer_params
             ).serializable_hash
           end
 

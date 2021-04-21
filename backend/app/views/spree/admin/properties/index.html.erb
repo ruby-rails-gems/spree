@@ -53,9 +53,11 @@
           <td><%= property.name %></td>
           <td><%= property.presentation %></td>
           <td><%= property.filterable %></td>
-          <td class="actions actions-2 text-right">
-            <%= link_to_edit(property, no_text: true) if can?(:edit, property) %>
-            <%= link_to_delete(property, no_text: true) if can?(:delete, property) %>
+          <td class="actions">
+            <span class="d-flex justify-content-end">
+              <%= link_to_edit(property, no_text: true) if can?(:edit, property) %>
+              <%= link_to_delete(property, no_text: true) if can?(:delete, property) %>
+            </span>
           </td>
         </tr>
       <% end %>

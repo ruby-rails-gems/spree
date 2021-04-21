@@ -5,17 +5,6 @@
   </head>
 
   <body class="admin">
-
-    <%#-------------------------------------------------%>
-    <%# Loading progress bars                           %>
-    <%#-------------------------------------------------%>
-    <div id="progress">
-      <div class="alert alert-info alert-progress">
-        <div class="spinner"><%= Spree.t(:loading) %>...</div>
-        <div class="progress-message"><%= Spree.t(:loading) %>...</div>
-      </div>
-    </div>
-
     <%#-------------------------------------------------%>
     <%# Header navbar                                   %>
     <%#-------------------------------------------------%>
@@ -57,8 +46,8 @@
               <%#-------------------------------------------------%>
               <%# Main content                                    %>
               <%#-------------------------------------------------%>
-              <div class="<%= content_for?(:sidebar) ? 'with-sidebar col-12 col-lg-9' : 'col-12'  %>" id="content" data-hook>
-                <%= render partial: 'spree/admin/shared/table_filter' if content_for?(:table_filter)%>
+              <div class="<%= content_for?(:sidebar) ? 'with-sidebar col-12 col-lg-9' : 'col-12' %>" id="content" data-hook>
+                <%= render partial: 'spree/admin/shared/table_filter' if content_for?(:table_filter) %>
                 <%= yield %>
               </div>
 
@@ -86,7 +75,18 @@
     <%#-------------------------------------------------%>
     <%# Alerts                                          %>
     <%#-------------------------------------------------%>
-    <%= flash_alert(flash) %>
-    
+    <div id="FlashAlertsContainer" class="d-none">
+      <%= flash_alert(flash) %>
+    </div>
+
+    <%#-------------------------------------------------%>
+    <%# Loading progress bars                           %>
+    <%#-------------------------------------------------%>
+    <div id="progress">
+      <div class="alert alert-info alert-progress">
+        <div class="spinner"><%= Spree.t(:loading) %>...</div>
+        <div class="progress-message"><%= Spree.t(:loading) %>...</div>
+      </div>
+    </div>
   </body>
 </html>

@@ -23,6 +23,7 @@
             <div class="col-12 col-md-6 mb-3 mb-md-0">
               <div class="input-group datePickerFrom"
                    data-wrap="true"
+                   data-alt-format="<%= Spree.t(:fpr_human_friendly_date_format, scope: 'date_picker', default: 'M j, Y') %>"
                    data-max-date="<%= params[:q][:created_at_lt] %>">
                 <%= f.text_field :created_at_gt,
                   class: 'form-control js-filterable shadow-none',
@@ -36,6 +37,7 @@
             <div class="col-12 col-md-6 mt-3 mt-md-0">
               <div class="input-group datePickerTo"
                    data-wrap="true"
+                   data-alt-format="<%= Spree.t(:fpr_human_friendly_date_format, scope: 'date_picker', default: 'M j, Y') %>"
                    data-min-date="<%= params[:q][:created_at_gt] %>">
 
                 <%= f.text_field :created_at_lt,
@@ -52,7 +54,7 @@
       </div>
       <div class="col-12 col-lg-4">
         <div class="form-group">
-          <%= label_tag :q_number_cont, Spree.t(:order_number, number: '') %>
+          <%= label_tag :q_number_cont, Spree.t(:order_number, number: 'Number') %>
           <%= f.text_field :number_cont, class: 'form-control js-quick-search-target js-filterable' %>
         </div>
       </div>
@@ -67,21 +69,21 @@
           <%= f.select :state_eq,
             Spree::Order.state_machines[:state].states.map {|s| [Spree.t("order_state.#{s.name}"), s.value]},
             { include_blank: true },
-            class: 'select2 js-filterable' %>
+            class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
       <div class="col-12 col-lg-4">
         <div class="form-group">
           <%= label_tag :q_payment_state_eq, Spree.t(:payment_state) %>
-          <%= f.select :payment_state_eq, Spree::Order::PAYMENT_STATES.map {|s| [Spree.t("payment_states.#{s}"), s]}, { include_blank: true }, class: 'select2 js-filterable' %>
+          <%= f.select :payment_state_eq, Spree::Order::PAYMENT_STATES.map {|s| [Spree.t("payment_states.#{s}"), s]}, { include_blank: true }, class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
       <div class="col-12 col-lg-4">
         <div class="form-group">
           <%= label_tag :q_shipment_state_eq, Spree.t(:shipment_state) %>
-          <%= f.select :shipment_state_eq, Spree::Order::SHIPMENT_STATES.map {|s| [Spree.t("shipment_states.#{s}"), s]}, { include_blank: true }, class: 'select2 js-filterable' %>
+          <%= f.select :shipment_state_eq, Spree::Order::SHIPMENT_STATES.map {|s| [Spree.t("shipment_states.#{s}"), s]}, { include_blank: true }, class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
@@ -124,21 +126,21 @@
       <div class="col-12 col-lg-4">
         <div class="form-group">
           <%= label_tag :q_promotions_id_in, Spree.t(:promotion) %>
-          <%= f.select :promotions_id_in, Spree::Promotion.applied.pluck(:name, :id), { include_blank: true }, class: 'select2 js-filterable' %>
+          <%= f.select :promotions_id_in, Spree::Promotion.applied.pluck(:name, :id), { include_blank: true }, class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
       <div class="col-12 col-lg-4">
         <div class="form-group">
           <%= label_tag :q_store_id_in, Spree.t(:store) %>
-          <%= f.select :store_id_in, Spree::Store.order(:name).pluck(:name, :id), { include_blank: true }, class: 'select2 js-filterable' %>
+          <%= f.select :store_id_in, Spree::Store.order(:name).pluck(:name, :id), { include_blank: true }, class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
       <div class="col-12 col-lg-4">
         <div class="form-group">
           <%= label_tag :q_channel_eq, Spree.t(:channel) %>
-          <%= f.select :channel_eq, Spree::Order.distinct.pluck(:channel), { include_blank: true }, class: 'select2 js-filterable' %>
+          <%= f.select :channel_eq, Spree::Order.distinct.pluck(:channel), { include_blank: true }, class: 'select2-clear js-filterable' %>
         </div>
       </div>
 
@@ -252,8 +254,10 @@
           <% end %>
         </td>
         <td><%= order.display_total.to_html %></td>
-        <td class='actions actions-1' data-hook="admin_orders_index_row_actions">
-          <%= link_to_edit_url edit_admin_order_path(order), title: "admin_edit_#{dom_id(order)}", no_text: true if can?(:edit, order) %>
+        <td class='actions' data-hook="admin_orders_index_row_actions">
+          <span class="d-flex justify-content-end">
+            <%= link_to_edit_url edit_admin_order_path(order), title: "admin_edit_#{dom_id(order)}", no_text: true if can?(:edit, order) %>
+          </span>
         </td>
       </tr>
     <% end %>
